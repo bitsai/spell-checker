@@ -207,4 +207,4 @@
 	     "together" "togehter", "profits" "proffits"})
 
 (println (time (spelltest tests1)))
-;;(println (time (spelltest tests2)))
+(println (time (spelltest tests2)))
