@@ -18,15 +18,16 @@
 		   (str a c (subs b 1)))
 	inserts (for [[a b] splits, c *alphabet*]
 		  (str a c b))]
-    (set (concat deletes transposes replaces inserts))))
+    (reduce into #{} [deletes transposes replaces inserts])))
 
 (defn edits2 [word]
-  (set (for [e1 (edits1 word), e2 (edits1 e1) :when (*nwords* e2)] e2)))
+  (seq (set (for [e1 (edits1 word), e2 (edits1 e1) :when (*nwords* e2)]
+	      e2))))
 
 (defn known [words]
   (seq (filter *nwords* words)))
 
 (defn correct [word]
   (let [candidates (or (known [word]) (known (edits1 word))
-		       (seq (edits2 word)) [word])]
+		       (edits2 word) [word])]
     (apply max-key #(get *nwords* % 1) candidates)))
